@@ -1,0 +1,33 @@
+services:
+  mysql-patient-ms-db:
+    image: mysql:8.0
+    container_name: container_mysql-patient-ms-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: patient-ms-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user123
+    ports:
+      - "3308:3306"
+    volumes:
+      - patient_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+
+  phpmyadmin-patient-ms-db:
+    container_name: container_phpmyadmin-patient-ms-db
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "3002:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: mysql-patient-ms-db
+      PMA_USER: user
+      PMA_PASSWORD: user123
+    depends_on:
+      - mysql-patient-ms-db
+    restart: unless-stopped
+
+volumes:
+  patient_mysql_data:
+    driver: local

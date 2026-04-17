@@ -1,0 +1,33 @@
+services:
+  mysql-consultation-ms-db:
+    image: mysql:8.0
+    container_name: container_mysql-consultation-ms-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: consultation-ms-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user123
+    ports:
+      - "3309:3306"
+    volumes:
+      - consultation_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+
+  phpmyadmin-consultation-ms-db:
+    container_name: container_phpmyadmin-consultation-ms-db
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "3003:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: mysql-consultation-ms-db
+      PMA_USER: user
+      PMA_PASSWORD: user123
+    depends_on:
+      - mysql-consultation-ms-db
+    restart: unless-stopped
+
+volumes:
+  consultation_mysql_data:
+    driver: local

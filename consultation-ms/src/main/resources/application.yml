@@ -1,0 +1,55 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: consultation-ms
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/${DB_NAME:consultation-ms-db}?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:user123}
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+# topic kafka
+kafka:
+  topic: consultation-notification-topic
+
+# url de patient-ms
+patient:
+  service:
+    url: http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+info:
+  application:
+    name: consultation-ms
+    version: '@project.version@'
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+  file:
+    name: logs/logs.log

@@ -1,0 +1,5 @@
+com/groupeisi/common_ms/exception/EntityExistsException.class
+com/groupeisi/common_ms/exception/EntityNotFoundException.class
+com/groupeisi/common_ms/dto/NotificationDTO.class
+com/groupeisi/common_ms/dto/ConsultationDTO.class
+com/groupeisi/common_ms/dto/PatientDTO.class

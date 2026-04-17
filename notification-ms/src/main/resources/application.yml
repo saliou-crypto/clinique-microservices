@@ -1,0 +1,40 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: notification-ms
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+kafka:
+  topic: consultation-notification-topic
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+info:
+  application:
+    name: notification-ms
+    version: '@project.version@'
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+  file:
+    name: logs/logs.log
